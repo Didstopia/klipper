@@ -1,0 +1,18 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Run scheduled every 6 hours
+  workflow_dispatch: # Allow running manually
+
+jobs:
+  sync-upstream:
+    name: Sync Upstream
+    runs-on: ubuntu-latest
+    steps:
+      # Sync upstream Klipper with this fork
+      - uses: tgymnich/fork-sync@v1.8
+        with:
+          owner: Klipper3d
+          base: master
+          head: master
