@@ -23,8 +23,8 @@ jobs:
       - name: Sync Upstream Repository
         id: sync
         # uses: aormsby/Fork-Sync-With-Upstream-action@master
-        # uses: aormsby/Fork-Sync-With-Upstream-action@v3.2
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.0
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        # uses: aormsby/Fork-Sync-With-Upstream-action@v3.0
         with:
           # Target branch in this repository
           target_sync_branch: master
