@@ -9,10 +9,33 @@ jobs:
   sync-upstream:
     name: Sync Upstream
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      # Sync upstream Klipper with this fork
-      - uses: tgymnich/fork-sync@v1.8
+      - name: Checkout Repository
+        uses: actions/checkout@v3
         with:
-          owner: Klipper3d
-          base: master
-          head: master
+          # optional: set the branch to checkout,
+          # sync action checks out your 'target_sync_branch' anyway
+          # ref: skr-mini-e3-v3-0
+          ref: master
+          # REQUIRED if your upstream repo is private (see wiki)
+          persist-credentials: false
+      - name: Sync Upstream Repository
+        id: sync
+        # uses: aormsby/Fork-Sync-With-Upstream-action@master
+        # uses: aormsby/Fork-Sync-With-Upstream-action@v3.2
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.0
+        with:
+          # Target branch in this repository
+          target_sync_branch: master
+          # REQUIRED 'target_repo_token' exactly like this!
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          # target_repo_token: ${{ secrets.GH_API_WORKFLOWS_TOKEN }}
+          # Upstream branch in another repository
+          upstream_sync_branch: master
+          upstream_sync_repo: Klipper3d/klipper
+          # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
+          # Overwrite and keep the upstream commits
+          upstream_pull_args: '-s recursive -Xtheirs --allow-unrelated-histories'
+          # Rebase instead of merge
+          git_config_pull_rebase: true
