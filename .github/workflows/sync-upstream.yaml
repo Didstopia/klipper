@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -20,22 +21,46 @@ jobs:
           ref: master
           # REQUIRED if your upstream repo is private (see wiki)
           persist-credentials: false
+
+      #- name: Sync Upstream Repository
+      #  id: sync
+      #  # uses: aormsby/Fork-Sync-With-Upstream-action@master
+      #  uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+      #  # uses: aormsby/Fork-Sync-With-Upstream-action@v3.0
+      #  with:
+      #    # Target branch in this repository
+      #    target_sync_branch: master
+      #    # REQUIRED 'target_repo_token' exactly like this!
+      #    target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    # target_repo_token: ${{ secrets.GH_API_WORKFLOWS_TOKEN }}
+      #    # Upstream branch in another repository
+      #    upstream_sync_branch: master
+      #    upstream_sync_repo: Klipper3d/klipper
+      #    # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
+      #    # Overwrite and keep the upstream commits
+      #    upstream_pull_args: '-s recursive -Xtheirs --allow-unrelated-histories'
+      #    # Rebase instead of merge
+      #    git_config_pull_rebase: true
+
       - name: Sync Upstream Repository
         id: sync
-        # uses: aormsby/Fork-Sync-With-Upstream-action@master
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
-        # uses: aormsby/Fork-Sync-With-Upstream-action@v3.0
+        #uses: Wandalen/wretry.action@master
+        uses: Wandalen/wretry.action@v1.0.36
         with:
-          # Target branch in this repository
-          target_sync_branch: master
-          # REQUIRED 'target_repo_token' exactly like this!
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          # target_repo_token: ${{ secrets.GH_API_WORKFLOWS_TOKEN }}
-          # Upstream branch in another repository
-          upstream_sync_branch: master
-          upstream_sync_repo: Klipper3d/klipper
-          # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
-          # Overwrite and keep the upstream commits
-          upstream_pull_args: '-s recursive -Xtheirs --allow-unrelated-histories'
-          # Rebase instead of merge
-          git_config_pull_rebase: true
+          attempt_limit: 3 # Attempt 3 times before giving up
+          attempt_delay: 60000 # Delay each attempt by 1 minute
+          action: aormsby/Fork-Sync-With-Upstream-action@v3.4
+          with: |
+            # Target branch in this repository
+            target_sync_branch: master
+            # REQUIRED 'target_repo_token' exactly like this!
+            target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+            # target_repo_token: ${{ secrets.GH_API_WORKFLOWS_TOKEN }}
+            # Upstream branch in another repository
+            upstream_sync_branch: master
+            upstream_sync_repo: Klipper3d/klipper
+            # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
+            # Overwrite and keep the upstream commits
+            upstream_pull_args: '-s recursive -Xtheirs --allow-unrelated-histories'
+            # Rebase instead of merge
+            git_config_pull_rebase: 
