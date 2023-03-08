@@ -47,20 +47,14 @@ jobs:
         #uses: Wandalen/wretry.action@master
         uses: Wandalen/wretry.action@v1.0.36
         with:
+          secrets: inherit
           attempt_limit: 3 # Attempt 3 times before giving up
           attempt_delay: 60000 # Delay each attempt by 1 minute
           action: aormsby/Fork-Sync-With-Upstream-action@v3.4
           with: |
-            # Target branch in this repository
-            target_sync_branch: master
-            # REQUIRED 'target_repo_token' exactly like this!
-            target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-            # target_repo_token: ${{ secrets.GH_API_WORKFLOWS_TOKEN }}
-            # Upstream branch in another repository
-            upstream_sync_branch: master
-            upstream_sync_repo: Klipper3d/klipper
-            # upstream_repo_access_token: ${{ secrets.UPSTREAM_REPO_SECRET }}
-            # Overwrite and keep the upstream commits
+            target_sync_branch: 'master'
+            target_repo_token: '${{ secrets.GITHUB_TOKEN }}'
+            upstream_sync_branch: 'master'
+            upstream_sync_repo: 'Klipper3d/klipper'
             upstream_pull_args: '-s recursive -Xtheirs --allow-unrelated-histories'
-            # Rebase instead of merge
-            git_config_pull_rebase: 
+            git_config_pull_rebase: true
