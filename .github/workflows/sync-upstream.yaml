@@ -1,6 +1,9 @@
 name: Sync Upstream
 
 on:
+  ## TODO: Temporarily running on pushes to debug!
+  push:
+    branches: [ 'custom' ]
   schedule:
     - cron: '0 */6 * * *' # Run scheduled every 6 hours
   workflow_dispatch: # Allow running manually
@@ -52,9 +55,9 @@ jobs:
           attempt_delay: 60000 # Delay each attempt by 1 minute
           action: aormsby/Fork-Sync-With-Upstream-action@v3.4
           with: |
-            target_sync_branch: 'master'
-            target_repo_token: '${{ secrets.GITHUB_TOKEN }}'
-            upstream_sync_branch: 'master'
-            upstream_sync_repo: 'Klipper3d/klipper'
+            target_sync_branch: master
+            target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+            upstream_sync_branch: master
+            upstream_sync_repo: Klipper3d/klipper
             upstream_pull_args: '-s recursive -Xtheirs --allow-unrelated-histories'
             git_config_pull_rebase: true
