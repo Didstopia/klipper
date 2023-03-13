@@ -45,5 +45,4 @@ jobs:
             target_repo_token: ${{ secrets.GITHUB_TOKEN }}
             upstream_sync_branch: master
             upstream_sync_repo: Klipper3d/klipper
-            upstream_pull_args: '--ff-only --tags'
             git_config_pull_rebase: true
